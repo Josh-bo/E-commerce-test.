@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap-5.2.2-dist/css/bootstrap.css">
+  </head>
+  <body>
+    <!-- HEADER -->
+        <section>
+            <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary ps-3 bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="#"><b class="text-danger fs-3">Natel Shop</b></a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="create.html">Create A product</a>
+                      </li>
+                     </ul>
+                    <form class="d-flex" role="search">
+                      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                  </div>
+                </div>
+              </nav>
+        </section>
+
+        <!-- Hero section -->
+        <section class="mt-5">
+           <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active" data-bs-interval="2200">
+      <img src="/images/download (1).jpeg" class="d-block" alt="" style="height: 34.5rem; width: 86rem;">
+    </div>
+    <div class="carousel-item" data-bs-interval="2200">
+      <img src="/images/download (2).jpeg" class="d-block" alt="..." style="height: 34.5rem; width: 86rem;">
+    </div>
+    <div class="carousel-item" data-bs-interval="2200">
+      <img src="/images/download.jpeg" class="d-block " alt="..." style="height: 34.5rem; width: 86rem;">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</section>
+
+<div class="text-center mt-5 mb-5">
+  <b class="fs-3 bg-danger text-light p-3 rounded-5">OUR PRODUCTS</b>
+</div>
+
+<!-- Display section -->
+<section>
+    <div class="container-fluid mb-4">
+      <div class="row mx-auto" id="disp">
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+  import { getDownloadURL, ref as stRef, getStorage } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js"
+
+  const firebaseConfig = {
+      apiKey: "AIzaSyC39k1pRv5q2uKkEkiWu2TvSt9HUrBgkYY",
+      authDomain: "level-two-test.firebaseapp.com",
+      databaseURL: "https://level-two-test-default-rtdb.firebaseio.com",
+      projectId: "level-two-test",
+      storageBucket: "level-two-test.appspot.com",
+      messagingSenderId: "188984525921",
+      appId: "1:188984525921:web:c4cde3d43ba42b34f41620"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase();
+  const storage = getStorage()
+
+  let allDetails = []
+
+  onValue(ref(db, "productDetails"), (snapshot) => {
+      console.log(snapshot.val())
+
+      let allDetails = snapshot.val()
+      console.log(allDetails );
+      allDetails.map((eachDetails) => {
+          let imageRef = stRef(storage, `productImages/${eachDetails.coverImageName}`)
+          getDownloadURL(imageRef).then((url) => {
+              console.log(url)
+              // disp.innerHTML += `
+              //     <img src='${url}'/>
+              // `
+
+              
+             disp.innerHTML += `               
+                <div class="col-sm-12 mx-auto text-center. col-md-6 col-lg-2 border mx-2 mt-3" style="width: 18rem;">
+                      <img src="${url}" class="card-img-top" alt="..." style="height:200px;">
+                      <h5 class="card-title text-center mt-3">${eachDetails.title}</h5>
+                      <p class="card-text mt-3">
+                      <del class="mx-4">$ 888</del>
+                      <b class="mx-4">$ ${eachDetails.productPrice}</b>
+                      </p>
+
+                      <div class="text-center">
+                        <button class="text-center btn btn-primary w-100">
+                          <a href="#" class="nav-link text-light">Go somewhere</a>
+                          </button>
+                      </div>
+              </div>
+          `
+        })
+      })
+      
+  })
+</script>
+  <script src="bootstrap-5.2.2-dist/js/bootstrap.bundle.js"></script>
+</body>
+</html>
