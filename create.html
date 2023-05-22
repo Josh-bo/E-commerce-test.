@@ -59,13 +59,13 @@
   
   
   <!-- Display section -->
-  <div class="container mt-3 sticky-top mt-2 pt-2">
+  <div class="container mt-3 sticky-top mt-2 pt-2 ms-3">
     <div class="row">
-      <div class="col-9 mx-auto">
+      <div class="col-6 mx-auto">
         <button class="btn btn-danger">Delete all items</button>
       </div>
       
-      <div class="col-3 mx-auto">
+      <div class="col-6 mx-auto">
           <button class="btn btn-success" id="create">Create new item</button>
         </div>
       </div>
@@ -163,11 +163,11 @@ onValue(ref(db, "productDetails"), (snapshot) => {
     console.log(snapshot.val())
 
     let allDetails = snapshot.val()
-    console.log(allDetails );
+    // console.log(allDetails );
     allDetails.map((eachDetails) => {
         let imageRef = stRef(storage, `productImages/${eachDetails.coverImageName}`)
         getDownloadURL(imageRef).then((url) => {
-            console.log(url)
+            // console.log(url)
             // disp.innerHTML += `
             //     <img src='${url}'/>
             // `
@@ -178,7 +178,7 @@ onValue(ref(db, "productDetails"), (snapshot) => {
                     <img src="${url}" class="card-img-top" alt="..." style="height:200px;">
                     <h5 class="card-title text-center mt-3">${eachDetails.title}</h5>
                     <p class="card-text mt-3">
-                    <del class="mx-4">$ 888</del>
+                    <del class="mx-4 text-danger">$ 888</del>
                     <b class="mx-4">$ ${eachDetails.productPrice}</b>
                     </p>
 
